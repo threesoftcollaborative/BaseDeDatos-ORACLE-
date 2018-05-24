@@ -1,0 +1,60 @@
+CREATE OR REPLACE PACKAGE pkg_app_web_entorno AS
+PROCEDURE prc_login (p_username    IN  sga_usuario.usuario%TYPE,
+                     p_pass        IN  sga_usuario.pass%TYPE,
+                     p_recordset   OUT SYS_REFCURSOR);
+PROCEDURE prc_obtener_menu (p_id_menu       IN  sga_menu.id_menu%TYPE,
+                            p_recordset     OUT SYS_REFCURSOR); 
+PROCEDURE prc_lst_comuna (p_recordset     OUT SYS_REFCURSOR); 
+PROCEDURE prc_lst_marca (p_id_almacen       IN  sga_almacen.id_almacen%TYPE,
+                         p_recordset     OUT SYS_REFCURSOR); 
+END pkg_app_web_entorno;
+/
+CREATE OR REPLACE PACKAGE BODY pkg_app_web_entorno AS
+PROCEDURE prc_login (p_username    IN  sga_usuario.usuario%TYPE,
+                                          p_pass        IN  sga_usuario.pass%TYPE,
+                                          p_recordset   OUT SYS_REFCURSOR) AS
+    BEGIN 
+        OPEN p_recordset FOR
+            SELECT id_usuario,
+            usuario,
+            email,
+            estado,
+            id_perfil,
+            id_almacen 
+            FROM sga_usuario
+            WHERE usuario = p_username 
+            AND pass = p_pass;
+    END prc_login;
+    
+PROCEDURE prc_obtener_menu (p_id_menu       IN  sga_menu.id_menu%TYPE,
+                            p_recordset     OUT SYS_REFCURSOR) AS 
+     BEGIN 
+        OPEN p_recordset FOR
+            SELECT descripcion,
+            padre_menu,
+            destino ,
+            estado  
+            FROM sga_menu WHERE p_id_menu = id_menu;
+END prc_obtener_menu;
+PROCEDURE prc_lst_comuna (p_recordset     OUT SYS_REFCURSOR) AS
+BEGIN
+   OPEN p_recordset FOR
+   SELECT id_comuna,
+          comuna
+   FROM sga_comuna
+   WHERE estado = 1;
+END prc_lst_comuna;
+PROCEDURE prc_lst_marca (p_id_almacen       IN  sga_almacen.id_almacen%TYPE,
+                         p_recordset     OUT SYS_REFCURSOR) AS
+BEGIN
+   OPEN p_recordset FOR
+   SELECT id_marca,
+          marca,
+          id_proveedor
+   FROM sga_marca marca
+   JOIN sga_almacen almacen
+   ON marca.id_categoria = almacen.id_categoria
+   WHERE almacen.id_almacen = p_id_almacen
+   AND   marca.estado = 1;
+END prc_lst_marca;                         
+END pkg_app_web_entorno; 
