@@ -1,0 +1,41 @@
+CREATE SEQUENCE seq_id_almacen
+INCREMENT BY 1
+START WITH 1;	
+
+CREATE OR REPLACE PACKAGE pkg_app_escritorio_almacen AS
+PROCEDURE prc_add_almacen ( p_nombre        IN sga_almacen.nombre%TYPE,
+                            p_id_categoria  IN sga_almacen.id_categoria%TYPE,
+                            p_direccion     IN sga_almacen.direccion%TYPE,
+                            p_id_comuna     IN sga_almacen.id_comuna%TYPE);
+PROCEDURE prc_del_almacen (p_id_almacen     IN sga_almacen.id_almacen%TYPE);        
+END pkg_app_escritorio_almacen;
+
+/
+CREATE OR REPLACE PACKAGE BODY pkg_app_escritorio_almacen AS
+PROCEDURE prc_add_almacen ( p_nombre        IN sga_almacen.nombre%TYPE,
+                            p_id_categoria  IN sga_almacen.id_categoria%TYPE,
+                            p_direccion     IN sga_almacen.direccion%TYPE,
+                            p_id_comuna     IN sga_almacen.id_comuna%TYPE) AS
+BEGIN 
+    INSERT INTO sga_almacen
+    VALUES(seq_id_almacen.NEXTVAL,
+            p_nombre,
+            p_id_categoria,
+            p_direccion,
+            p_id_comuna,
+            1);
+END prc_add_almacen;
+PROCEDURE prc_del_almacen (p_id_almacen     IN sga_almacen.id_almacen%TYPE) AS
+BEGIN
+    UPDATE sga_almacen 
+    SET estado = 0
+    WHERE id_almacen = p_id_almacen;
+END prc_del_almacen;
+END pkg_app_escritorio_almacen;
+/
+
+EXEC PKG_APP_ESCRITORIO_ALMACEN.PRC_ADD_ALMACEN('YUYITOS',1,'Las flores 1212',11); 
+EXEC PKG_APP_ESCRITORIO_ALMACEN.PRC_ADD_ALMACEN('ZAPALLITOS',2,'Arturo Prat 134',20); 
+EXEC PKG_APP_ESCRITORIO_ALMACEN.PRC_ADD_ALMACEN('PATITAS',3,'Los leones 1612',2);
+EXEC PKG_APP_ESCRITORIO_ALMACEN.PRC_ADD_ALMACEN('TRAPOS',4,'el bosque 123',5);
+EXEC PKG_APP_ESCRITORIO_ALMACEN.PRC_ADD_ALMACEN('FITSTORE',5,'lota 2546',8); 

@@ -1,0 +1,83 @@
+CREATE SEQUENCE seq_id_usuario
+INCREMENT BY 1
+START WITH 1;	
+
+CREATE OR REPLACE PACKAGE pkg_app_escritorio_usuario AS
+PROCEDURE prc_add_usuario   (p_usuario              IN sga_usuario.usuario%TYPE,
+                             p_pass                 IN sga_usuario.pass%TYPE,
+                             p_email                IN sga_usuario.email%TYPE,
+                             p_id_perfil            IN sga_usuario.id_perfil%TYPE,
+                             p_id_almacen           IN sga_usuario.id_almacen%TYPE);
+PROCEDURE prc_upd_usuario    (p_id_usuario          IN sga_usuario.id_usuario%TYPE,
+                             p_usuario              IN sga_usuario.usuario%TYPE,
+                             p_pass                 IN sga_usuario.pass%TYPE,
+                             p_email                IN sga_usuario.email%TYPE,
+                             p_id_perfil            IN sga_usuario.id_perfil%TYPE,
+                             p_id_almacen           IN sga_usuario.id_almacen%TYPE);
+PROCEDURE prc_del_usuario    (p_id_usuario          IN sga_usuario.id_usuario%TYPE);
+PROCEDURE prc_lst_usuario    (p_id_almacen          IN sga_usuario.id_almacen%TYPE,
+                             p_recordset          OUT SYS_REFCURSOR);
+PROCEDURE prc_lst_id_usuario (p_id_usuario          IN sga_usuario.id_usuario%TYPE,
+                             p_recordset          OUT SYS_REFCURSOR);
+END pkg_app_escritorio_usuario;
+/
+CREATE OR REPLACE PACKAGE BODY pkg_app_escritorio_usuario AS
+PROCEDURE prc_add_usuario   (p_usuario              IN sga_usuario.usuario%TYPE,
+                             p_pass                 IN sga_usuario.pass%TYPE,
+                             p_email                IN sga_usuario.email%TYPE,
+                             p_id_perfil            IN sga_usuario.id_perfil%TYPE,
+                             p_id_almacen           IN sga_usuario.id_almacen%TYPE) AS
+BEGIN
+    INSERT INTO sga_usuario
+    VALUES (seq_id_usuario.NEXTVAL,
+            p_usuario,
+            p_pass,
+            p_email,
+            1,
+            p_id_perfil,
+            p_id_almacen);     
+END prc_add_usuario;
+PROCEDURE prc_upd_usuario    (p_id_usuario          IN sga_usuario.id_usuario%TYPE,
+                             p_usuario              IN sga_usuario.usuario%TYPE,
+                             p_pass                 IN sga_usuario.pass%TYPE,
+                             p_email                IN sga_usuario.email%TYPE,
+                             p_id_perfil            IN sga_usuario.id_perfil%TYPE,
+                             p_id_almacen           IN sga_usuario.id_almacen%TYPE) AS
+BEGIN
+    UPDATE sga_usuario
+    SET usuario = p_usuario,
+        pass = p_pass,
+        email = p_email,
+        id_perfil = id_perfil,
+        id_almacen = id_almacen
+    WHERE id_usuario = p_id_usuario;
+END prc_upd_usuario;
+PROCEDURE prc_del_usuario    (p_id_usuario          IN sga_usuario.id_usuario%TYPE) AS
+BEGIN
+    UPDATE sga_usuario
+    SET estado = 0
+    WHERE id_usuario = p_id_usuario;
+END prc_del_usuario;
+PROCEDURE prc_lst_usuario    (p_id_almacen          IN sga_usuario.id_almacen%TYPE,
+                             p_recordset          OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_recordset FOR
+    SELECT usuario,
+           email,
+           id_perfil
+    FROM sga_usuario
+    WHERE id_almacen = p_id_almacen;
+END prc_lst_usuario;
+PROCEDURE prc_lst_id_usuario (p_id_usuario          IN sga_usuario.id_usuario%TYPE,
+                              p_recordset          OUT SYS_REFCURSOR) AS
+BEGIN
+   OPEN p_recordset FOR
+   SELECT usuario,
+          pass,
+          email,
+          id_perfil,
+          id_almacen
+    FROM sga_usuario
+    WHERE id_usuario = p_id_usuario;
+END prc_lst_id_usuario;
+END pkg_app_escritorio_usuario;
