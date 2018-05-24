@@ -1,0 +1,112 @@
+CREATE OR REPLACE PACKAGE pkg_app_web_proveedor AS 
+PROCEDURE prc_add_proveedor     (p_nombre       IN  sga_proveedor.nombre%TYPE,
+                                p_rut          IN  sga_proveedor.rut%TYPE,
+                                p_fono         IN  sga_proveedor.fono%TYPE,
+                                p_email        IN  sga_proveedor.email%TYPE,
+                                p_direccion    IN  sga_proveedor.direccion%TYPE,
+                                p_id_comuna    IN  sga_proveedor.id_comuna%TYPE,
+                                p_id_almacen   IN  sga_proveedor.id_almacen%TYPE);
+PROCEDURE prc_upd_proveedor     (p_id_proveedor IN  sga_proveedor.id_proveedor%TYPE,
+                                p_nombre       IN  sga_proveedor.nombre%TYPE,
+                                p_rut          IN  sga_proveedor.rut%TYPE,
+                                p_fono         IN  sga_proveedor.fono%TYPE,
+                                p_email        IN  sga_proveedor.email%TYPE,
+                                p_direccion    IN  sga_proveedor.direccion%TYPE,
+                                p_id_comuna    IN  sga_proveedor.id_comuna%TYPE);
+PROCEDURE prc_del_proveedor     (p_id_proveedor IN  sga_proveedor.id_proveedor%TYPE);
+PROCEDURE prc_lst_proveedor     (p_id_almacen        IN sga_almacen.id_almacen%TYPE,
+                                p_recordset         OUT SYS_REFCURSOR);
+PROCEDURE prc_lst_id_proveedor  (p_id_proveedor IN  sga_proveedor.id_proveedor%TYPE,
+                                p_recordset         OUT SYS_REFCURSOR);                           
+END pkg_app_web_proveedor;
+/
+CREATE OR REPLACE PACKAGE BODY pkg_app_web_proveedor AS
+PROCEDURE prc_add_proveedor (p_nombre       IN  sga_proveedor.nombre%TYPE,
+                             p_rut          IN  sga_proveedor.rut%TYPE,
+                             p_fono         IN  sga_proveedor.fono%TYPE,
+                             p_email        IN  sga_proveedor.email%TYPE,
+                             p_direccion    IN  sga_proveedor.direccion%TYPE,
+                             p_id_comuna    IN  sga_proveedor.id_comuna%TYPE,
+                             p_id_almacen   IN  sga_proveedor.id_almacen%TYPE) AS
+BEGIN
+    INSERT INTO sga_proveedor
+    VALUES (seq_id_proveedor.nextval,
+            p_nombre,
+            p_rut,
+            p_fono,
+            p_email,
+            p_direccion,
+            1,
+            p_id_comuna,
+            p_id_almacen);
+END prc_add_proveedor;
+PROCEDURE prc_upd_proveedor (p_id_proveedor IN  sga_proveedor.id_proveedor%TYPE,
+                             p_nombre       IN  sga_proveedor.nombre%TYPE,
+                             p_rut          IN  sga_proveedor.rut%TYPE,
+                             p_fono         IN  sga_proveedor.fono%TYPE,
+                             p_email        IN  sga_proveedor.email%TYPE,
+                             p_direccion    IN  sga_proveedor.direccion%TYPE,
+                             p_id_comuna    IN  sga_proveedor.id_comuna%TYPE) AS 
+BEGIN
+    UPDATE sga_proveedor
+    SET nombre = p_nombre,
+        rut = p_rut,
+        fono = p_fono,
+        email = p_email,
+        direccion = p_direccion,
+        id_comuna = p_id_comuna
+    WHERE id_proveedor=p_id_proveedor;
+END prc_upd_proveedor;    
+PROCEDURE prc_del_proveedor (p_id_proveedor IN  sga_proveedor.id_proveedor%TYPE) AS
+BEGIN
+UPDATE sga_proveedor
+    SET estado = 0
+    WHERE id_proveedor=p_id_proveedor;
+END prc_del_proveedor;
+PROCEDURE prc_del_producto (p_id_producto     IN sga_producto.id_producto%TYPE) AS
+BEGIN
+    UPDATE sga_producto
+    SET estado = 0
+    WHERE id_producto = p_id_producto;
+END prc_del_producto;
+PROCEDURE prc_lst_proveedor (p_id_almacen        IN sga_almacen.id_almacen%TYPE,
+                            p_recordset         OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_recordset FOR
+    SELECT NOMBRE,
+           RUT,
+           ID_PROVEEDOR,
+           ID_COMUNA,
+           FONO,
+           EMAIL,
+           DIRECCION
+    FROM sga_proveedor 
+    WHERE id_almacen = p_id_almacen
+    AND estado = 1;
+END prc_lst_proveedor;
+PROCEDURE prc_lst_id_proveedor  (p_id_proveedor IN  sga_proveedor.id_proveedor%TYPE,
+                                p_recordset         OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_recordset FOR
+    SELECT nombre, 
+           rut,
+           fono,
+           email,
+           direccion,
+           id_comuna
+    FROM sga_proveedor
+    WHERE id_proveedor = p_id_proveedor;
+END prc_lst_id_proveedor;
+END pkg_app_web_proveedor;
+
+
+EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('NESTLE','11111111-1',11111111,'NESTLE@ESFALSO.CL','las lilas 1313',1,1);
+EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('CCU','11111111-1',11111112,'CCU@ESFALSO.CL','las escondida 656',4,1);
+EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('LA VEGA','11111111-1',11111113,'LA VEGA@ESFALSO.CL','carahue 2345',7,2);
+EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('EL DORADO','11111111-1',11111114,'EL DORADO@ESFALSO.CL','maipu 123',16,2);
+EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('MASCOSAS','11111111-1',11111115,'MASCOSAS@ESFALSO.CL','milan 1492',8,3);
+EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('DOKO','11111111-1',11111116,'DOKO@ESFALSO.CL','rio claro 1423',14,3);
+EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('HYM','11111111-1',11111117,'HYM@ESFALSO.CL','el aguilucho 2354',21,4);
+EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('AMERICANINO','11111111-1',11111118,'AMERICANINO@ESFALSO.CL','el morado 2154',3,4);
+EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('NIKE','11111111-1',11111119,'NIKE@ESFALSO.CL','uno 1111',11,5);
+EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('SPARTA','11111111-1',11111120,'SPARTA@ESFALSO.CL','sol 567',9,5);
