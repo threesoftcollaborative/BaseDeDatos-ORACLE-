@@ -7,6 +7,8 @@ PROCEDURE prc_obtener_menu (p_id_menu       IN  sga_menu.id_menu%TYPE,
 PROCEDURE prc_lst_comuna (p_recordset     OUT SYS_REFCURSOR); 
 PROCEDURE prc_lst_marca (p_id_almacen       IN  sga_almacen.id_almacen%TYPE,
                          p_recordset     OUT SYS_REFCURSOR); 
+PROCEDURE prc_lst_produ_provee (p_id_proveedor       IN  sga_proveedor.id_proveedor%TYPE,
+                         p_recordset     OUT SYS_REFCURSOR);
 END pkg_app_web_entorno;
 /
 CREATE OR REPLACE PACKAGE BODY pkg_app_web_entorno AS
@@ -25,7 +27,7 @@ PROCEDURE prc_login (p_username    IN  sga_usuario.usuario%TYPE,
             WHERE usuario = p_username 
             AND pass = p_pass;
     END prc_login;
-    
+ 
 PROCEDURE prc_obtener_menu (p_id_menu       IN  sga_menu.id_menu%TYPE,
                             p_recordset     OUT SYS_REFCURSOR) AS 
      BEGIN 
@@ -56,5 +58,17 @@ BEGIN
    ON marca.id_categoria = almacen.id_categoria
    WHERE almacen.id_almacen = p_id_almacen
    AND   marca.estado = 1;
-END prc_lst_marca;                         
+END prc_lst_marca;   
+PROCEDURE prc_lst_produ_provee (p_id_proveedor       IN  sga_proveedor.id_proveedor%TYPE,
+                         p_recordset     OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_recordset FOR
+    SELECT produ.id_producto,
+            produ.nombre,
+            produ.precio_compra 
+    FROM sga_marca marca
+    JOIN sga_producto produ
+    ON marca.id_marca = produ.id_marca
+    WHERE marca.id_proveedor=p_id_proveedor;
+END prc_lst_produ_provee;
 END pkg_app_web_entorno; 
