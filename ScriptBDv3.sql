@@ -1,4 +1,3 @@
-    id_usuario       NUMBER NOT NULL,
 -- 1.-Creación de tablas del modelo de BD
 +
 +CREATE TABLE sga_almacen (
