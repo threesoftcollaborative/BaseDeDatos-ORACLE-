@@ -1,6 +1,6 @@
 # BaseDeDatos-ORACLE-
-Para poder instalar el modelo de bases de datos del aplicativo SGA (Sistema de gestion para almacenes) es necesario solo el archivo ScriptBDv3.sql
-El cual se debe ejecutar en el siguente orden:
+Para poder instalar el modelo de bases de datos del aplicativo SGA (Sistema de gestion para almacenes) es necesario solo el archivo ScriptBDv3.sql</br>
+El cual se debe ejecutar en el siguente orden:</br>
 Nota: ejecutar y/o compilr de manera aislada cada uno de estos pasos.
 1.- 	Creación de tablas del modelo de BD
 2.- 	Agregar foreign key para establecer las relaciones del modelo BD
