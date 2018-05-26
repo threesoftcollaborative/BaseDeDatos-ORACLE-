@@ -1,0 +1,122 @@
+CREATE SEQUENCE seq_id_cliente
+INCREMENT BY 1
+START WITH 1;
+
+CREATE OR REPLACE PACKAGE pkg_app_web_cliente AS 
+PROCEDURE prc_add_cliente      (p_rut                 IN  sga_cliente.rut%TYPE,
+                                p_nombre              IN  sga_cliente.nombre%TYPE,
+                                p_apellido            IN  sga_cliente.apellido%TYPE,
+                                p_telefono            IN  sga_cliente.telefono%TYPE,
+                                p_email               IN  sga_cliente.email%TYPE,
+                                p_fecha_nacimiento    IN  sga_cliente.fecha_nacimiento%TYPE,
+                                p_direccion           IN  sga_cliente.direccion%TYPE,
+                                p_id_almacen          IN  sga_cliente.id_almacen%TYPE,
+                                p_id_comuna           IN  sga_cliente.id_comuna%TYPE);
+PROCEDURE prc_upd_cliente      (p_id_cliente          IN  sga_cliente.id_cliente%TYPE,
+                                p_nombre              IN  sga_cliente.nombre%TYPE,
+                                p_apellido            IN  sga_cliente.apellido%TYPE,
+                                p_telefono            IN  sga_cliente.telefono%TYPE,
+                                p_email               IN  sga_cliente.email%TYPE,
+                                p_fecha_nacimiento    IN  sga_cliente.fecha_nacimiento%TYPE,
+                                p_direccion           IN  sga_cliente.direccion%TYPE,
+                                p_id_comuna           IN  sga_cliente.id_comuna%TYPE);
+PROCEDURE prc_del_cliente       (p_id_cliente          IN  sga_cliente.id_cliente%TYPE);
+PROCEDURE prc_lst_cliente       (p_id_almacen        IN sga_almacen.id_almacen%TYPE,
+                                p_recordset         OUT SYS_REFCURSOR);
+PROCEDURE prc_lst_id_cliente    (p_id_cliente          IN  sga_cliente.id_cliente%TYPE,
+                                p_recordset         OUT SYS_REFCURSOR);
+END pkg_app_web_cliente;
+/
+CREATE OR REPLACE PACKAGE BODY pkg_app_web_cliente AS 
+PROCEDURE prc_add_cliente(p_rut                 IN  sga_cliente.rut%TYPE,
+                          p_nombre              IN  sga_cliente.nombre%TYPE,
+                          p_apellido            IN  sga_cliente.apellido%TYPE,
+                          p_telefono            IN  sga_cliente.telefono%TYPE,
+                          p_email               IN  sga_cliente.email%TYPE,
+                          p_fecha_nacimiento    IN  sga_cliente.fecha_nacimiento%TYPE,
+                          p_direccion           IN  sga_cliente.direccion%TYPE,
+                          p_id_almacen          IN  sga_cliente.id_almacen%TYPE,
+                          p_id_comuna           IN  sga_cliente.id_comuna%TYPE) AS
+BEGIN 
+    INSERT INTO sga_cliente
+    VALUES (seq_id_cliente.nextval,
+            p_rut,
+            p_nombre,
+            p_apellido,
+            p_telefono,
+            p_email,
+            p_fecha_nacimiento,
+            p_direccion,
+            1,
+            p_id_almacen,
+            p_id_comuna);
+END prc_add_cliente;
+PROCEDURE prc_upd_cliente(p_id_cliente          IN  sga_cliente.id_cliente%TYPE,
+                          p_nombre              IN  sga_cliente.nombre%TYPE,
+                          p_apellido            IN  sga_cliente.apellido%TYPE,
+                          p_telefono            IN  sga_cliente.telefono%TYPE,
+                          p_email               IN  sga_cliente.email%TYPE,
+                          p_fecha_nacimiento    IN  sga_cliente.fecha_nacimiento%TYPE,
+                          p_direccion           IN  sga_cliente.direccion%TYPE,
+                          p_id_comuna           IN  sga_cliente.id_comuna%TYPE) AS
+BEGIN
+    UPDATE sga_cliente
+    SET nombre = p_nombre,
+        apellido = p_apellido,
+        telefono = p_telefono,
+        email = p_email,
+        fecha_nacimiento = p_fecha_nacimiento,
+        direccion = p_direccion, 
+        id_comuna = p_id_comuna
+    WHERE id_cliente = p_id_cliente;
+END prc_upd_cliente;
+PROCEDURE prc_del_cliente(p_id_cliente          IN  sga_cliente.id_cliente%TYPE) AS
+BEGIN 
+    UPDATE sga_cliente
+    SET estado = 0
+    WHERE id_cliente = p_id_cliente;
+END prc_del_cliente;
+PROCEDURE prc_lst_cliente(p_id_almacen        IN sga_almacen.id_almacen%TYPE,
+                          p_recordset         OUT SYS_REFCURSOR) AS
+BEGIN 
+    OPEN p_recordset FOR
+    SELECT id_cliente, 
+           rut, 
+           nombre,
+           apellido,
+           telefono,
+           email,
+           fecha_nacimiento,
+           direccion,
+           id_comuna
+    FROM sga_cliente
+    WHERE id_almacen = p_id_almacen
+    AND estado = 1;
+END prc_lst_cliente;
+PROCEDURE prc_lst_id_cliente    (p_id_cliente          IN  sga_cliente.id_cliente%TYPE,
+                                p_recordset         OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_recordset FOR
+    SELECT nombre, 
+           apellido,
+           telefono,
+           email,
+           fecha_nacimiento,
+           direccion, 
+           id_comuna
+    FROM sga_cliente
+    WHERE id_cliente = p_id_cliente;
+END prc_lst_id_cliente;
+END pkg_app_web_cliente;
+
+EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-1','Elba','Surita',1111111,'Elba@ESMENTIRA.COM','12/03/90','lejos 1313',1,8);
+EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-2','Josefa','Parra',1111112,'Josefa@ESMENTIRA.COM','12/06/90','galaxia 1698',1,5);
+EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-3','Marcelo','Avila',1111113,'Marcelo@ESMENTIRA.COM','12/05/90','saturno 658',2,6);
+EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-4','Pedro','Pony',1111114,'Pedro@ESMENTIRA.COM','10/03/90','rio oscuro 777',2,13);
+EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-5','Alvaro','Galleguillos',1111115,'Alvaro@ESMENTIRA.COM','12/03/96','los aromos 6354',3,17);
+EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-6','Alexander','Fuentes',1111116,'Alexander@ESMENTIRA.COM','12/12/98','francia 154',3,9);
+EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-7','Mateo','Orellana',1111117,'Mateo@ESMENTIRA.COM','04/03/93','schlack 361',4,15);
+EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-8','Valentina','Gonzalez',1111118,'Valentina@ESMENTIRA.COM','12/08/94','pio nono 758',4,11);
+EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-9','Fabiola','Rosas',1111119,'Fabiola@ESMENTIRA.COM','02/07/90','manuel montt 999',5,2);
+EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-K','Camila','Suazo',1111120,'Camila@ESMENTIRA.COM','19/05/14','lejitos 888',5,1);
+
