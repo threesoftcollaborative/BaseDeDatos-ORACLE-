@@ -1,3 +1,5 @@
+-- 1.-Creación de tablas del modelo de BD
+
 CREATE TABLE sga_almacen (
     id_almacen   	NUMBER NOT NULL,
     nombre      	VARCHAR2(50),
@@ -158,7 +160,7 @@ CREATE TABLE sga_detalle_orden_compra (
 	CONSTRAINT detalle_orden_compra PRIMARY KEY (id_detalle_orden_compra)
 );
 
-
+--2.- Agregar foreign key para establecer las relaciones del modelo BD
 
 ALTER TABLE SGA_ALMACEN
 ADD CONSTRAINT sga_categoria_sga_almacen_fk
@@ -178,18 +180,15 @@ ADD	CONSTRAINT sga_almacen_sga_usuario_fk
     FOREIGN KEY (id_almacen)
     REFERENCES sga_almacen(id_almacen);
 
-
 ALTER TABLE sga_perfil
 ADD	CONSTRAINT sga_menu_sga_perfil_fk
     FOREIGN KEY (id_menu)
     REFERENCES sga_menu(id_menu);
-	
-	
+		
 ALTER TABLE sga_cliente
 ADD	CONSTRAINT sga_almacen_sga_cliente_fk
     FOREIGN KEY (id_almacen)
     REFERENCES sga_almacen(id_almacen);
-	
 		
 ALTER TABLE sga_marca
 ADD	CONSTRAINT sga_categoria_sga_marca_fk
@@ -214,14 +213,11 @@ ADD	CONSTRAINT sga_marca_sga_producto_fk
     FOREIGN KEY (id_marca)
     REFERENCES sga_marca(id_marca);
 	
-	
 ALTER TABLE	sga_detalle_producto
 ADD	CONSTRAINT sga_prod_sga_det_prod_fk
     FOREIGN KEY (id_producto)
     REFERENCES sga_producto(id_producto);
-	
-	
-	
+		
 ALTER TABLE	sga_boleta 
 ADD	CONSTRAINT sga_usuario_sga_boleta_fk
     FOREIGN KEY (id_usuario)
@@ -235,8 +231,6 @@ ADD	CONSTRAINT sga_almacen_sga_boleta_fk
     FOREIGN KEY (id_almacen)
     REFERENCES sga_almacen(id_almacen);
 	
-	
-	
 ALTER TABLE	sga_detalle_boleta
 ADD	CONSTRAINT sga_boleta_sga_det_bol_fk
     FOREIGN KEY (id_boleta)
@@ -245,8 +239,7 @@ ALTER TABLE	sga_detalle_boleta
 ADD  CONSTRAINT sga_det_prod_sga_det_bol_fk
     FOREIGN KEY (cod_barra)
     REFERENCES sga_detalle_producto(cod_barra);
-		
-	
+			
 ALTER TABLE	sga_orden_compra
 ADD	CONSTRAINT sga_usu_sga_ord_comp_fk
     FOREIGN KEY (id_usuario)
@@ -259,8 +252,7 @@ ALTER TABLE	sga_orden_compra
 ADD	CONSTRAINT sga_alm_sga_ord_comp_fk
     FOREIGN KEY (id_almacen)
     REFERENCES sga_almacen(id_almacen);
-	
-	
+		
 ALTER TABLE	sga_detalle_orden_compra
 ADD	CONSTRAINT sga_o_comp_sga_det_o_comp_fk
     FOREIGN KEY (id_orden_compra)
@@ -270,6 +262,7 @@ ADD  CONSTRAINT sga_prod_sga_det_o_comp_fk
     FOREIGN KEY (id_producto)
     REFERENCES sga_producto(id_producto);
 
+--3.- Datos sga_categria
 	
 INSERT INTO sga_categoria VALUES (1,'mercado',1);
 INSERT INTO sga_categoria VALUES (2,'velduleria',1);
@@ -277,38 +270,41 @@ INSERT INTO sga_categoria VALUES (3,'mascotas',1);
 INSERT INTO sga_categoria VALUES (4,'vestuario',1);
 INSERT INTO sga_categoria VALUES (5,'deportes',1);
 
-   INSERT INTO sga_comuna VALUES (1, 'Cerrillos' 	       ,1);
-   INSERT INTO sga_comuna VALUES (2, 'Cerro Navia' 	       ,1);
-   INSERT INTO sga_comuna VALUES (3, 'Conchalí' 	       ,1);
-   INSERT INTO sga_comuna VALUES (4, 'El Bosque' 	       ,1);
-   INSERT INTO sga_comuna VALUES (5, 'Estación Central'    ,1);
-   INSERT INTO sga_comuna VALUES (6, 'Huechuraba' 	       ,1);
-   INSERT INTO sga_comuna VALUES (7, 'Independencia' 	   ,1);
-   INSERT INTO sga_comuna VALUES (8, 'La Cisterna' 	       ,1);
-   INSERT INTO sga_comuna VALUES (9, 'La Florida' 	       ,1);
-   INSERT INTO sga_comuna VALUES (10, 'La Pintana' 	       ,1);
-   INSERT INTO sga_comuna VALUES (11, 'La Granja'          ,1);
-   INSERT INTO sga_comuna VALUES (12, 'La Reina' 	       ,1);
-   INSERT INTO sga_comuna VALUES (13, 'Las Condes'         ,1);
-   INSERT INTO sga_comuna VALUES (14, 'Lo Barnechea' 	   ,1);
-   INSERT INTO sga_comuna VALUES (15, 'Lo Espejo' 	       ,1);
-   INSERT INTO sga_comuna VALUES (16, 'Lo Prado'           ,1);
-   INSERT INTO sga_comuna VALUES (17, 'Macul' 	           ,1);
-   INSERT INTO sga_comuna VALUES (18, 'Maipú' 	           ,1);
-   INSERT INTO sga_comuna VALUES (19, 'Ñuñoa' 	           ,1);
-   INSERT INTO sga_comuna VALUES (20, 'Pedro Aguirre Cerda',1); 	     
-   INSERT INTO sga_comuna VALUES (21, 'Peñalolén' 	       ,1);
-   INSERT INTO sga_comuna VALUES (22, 'Pudahuel'           ,1);
-   INSERT INTO sga_comuna VALUES (23, 'Quilicura'          ,1);
-   INSERT INTO sga_comuna VALUES (24, 'Quinta Normal'      ,1);
-   INSERT INTO sga_comuna VALUES (25, 'Recoleta'           ,1);
-   INSERT INTO sga_comuna VALUES (26, 'Renca'              ,1);
-   INSERT INTO sga_comuna VALUES (27, 'San Miguel'         ,1);
-   INSERT INTO sga_comuna VALUES (28, 'San Joaquín'        ,1);
-   INSERT INTO sga_comuna VALUES (29, 'San Ramón'          ,1);
-   INSERT INTO sga_comuna VALUES (30, 'Santiago'           ,1);
-   INSERT INTO sga_comuna VALUES (31, 'Vitacura'           ,1);
+--4.- Datos sga_comuna
+
+INSERT INTO sga_comuna VALUES (1, 'Cerrillos' 	       ,1);
+INSERT INTO sga_comuna VALUES (2, 'Cerro Navia' 	       ,1);
+INSERT INTO sga_comuna VALUES (3, 'Conchalí' 	       ,1);
+INSERT INTO sga_comuna VALUES (4, 'El Bosque' 	       ,1);
+INSERT INTO sga_comuna VALUES (5, 'Estación Central'    ,1);
+INSERT INTO sga_comuna VALUES (6, 'Huechuraba' 	       ,1);
+INSERT INTO sga_comuna VALUES (7, 'Independencia' 	   ,1);
+INSERT INTO sga_comuna VALUES (8, 'La Cisterna' 	       ,1);
+INSERT INTO sga_comuna VALUES (9, 'La Florida' 	       ,1);
+INSERT INTO sga_comuna VALUES (10, 'La Pintana' 	       ,1);
+INSERT INTO sga_comuna VALUES (11, 'La Granja'          ,1);
+INSERT INTO sga_comuna VALUES (12, 'La Reina' 	       ,1);
+INSERT INTO sga_comuna VALUES (13, 'Las Condes'         ,1);
+INSERT INTO sga_comuna VALUES (14, 'Lo Barnechea' 	   ,1);
+INSERT INTO sga_comuna VALUES (15, 'Lo Espejo' 	       ,1);
+INSERT INTO sga_comuna VALUES (16, 'Lo Prado'           ,1);
+INSERT INTO sga_comuna VALUES (17, 'Macul' 	           ,1);
+INSERT INTO sga_comuna VALUES (18, 'Maipú' 	           ,1);
+INSERT INTO sga_comuna VALUES (19, 'Ñuñoa' 	           ,1);
+INSERT INTO sga_comuna VALUES (20, 'Pedro Aguirre Cerda',1); 	     
+INSERT INTO sga_comuna VALUES (21, 'Peñalolén' 	       ,1);
+INSERT INTO sga_comuna VALUES (22, 'Pudahuel'           ,1);
+INSERT INTO sga_comuna VALUES (23, 'Quilicura'          ,1);
+INSERT INTO sga_comuna VALUES (24, 'Quinta Normal'      ,1);
+INSERT INTO sga_comuna VALUES (25, 'Recoleta'           ,1);
+INSERT INTO sga_comuna VALUES (26, 'Renca'              ,1);
+INSERT INTO sga_comuna VALUES (27, 'San Miguel'         ,1);
+INSERT INTO sga_comuna VALUES (28, 'San Joaquín'        ,1);
+INSERT INTO sga_comuna VALUES (29, 'San Ramón'          ,1);
+INSERT INTO sga_comuna VALUES (30, 'Santiago'           ,1);
+INSERT INTO sga_comuna VALUES (31, 'Vitacura'           ,1);
 	
+--5.- Logica sga_almacen
 	
 CREATE SEQUENCE seq_id_almacen
 INCREMENT BY 1
@@ -345,12 +341,15 @@ BEGIN
 END prc_del_almacen;
 END pkg_app_escritorio_almacen;
 /
+--6.- Datos sga_almacen
 
 EXEC PKG_APP_ESCRITORIO_ALMACEN.PRC_ADD_ALMACEN('YUYITOS',1,'Las flores 1212',11); 
 EXEC PKG_APP_ESCRITORIO_ALMACEN.PRC_ADD_ALMACEN('ZAPALLITOS',2,'Arturo Prat 134',20); 
 EXEC PKG_APP_ESCRITORIO_ALMACEN.PRC_ADD_ALMACEN('PATITAS',3,'Los leones 1612',2);
 EXEC PKG_APP_ESCRITORIO_ALMACEN.PRC_ADD_ALMACEN('TRAPOS',4,'el bosque 123',5);
 EXEC PKG_APP_ESCRITORIO_ALMACEN.PRC_ADD_ALMACEN('FITSTORE',5,'lota 2546',8); 
+
+--7.- Logica sga_usuario
 
 CREATE SEQUENCE seq_id_usuario
 INCREMENT BY 1
@@ -436,9 +435,7 @@ BEGIN
 END prc_lst_id_usuario;
 END pkg_app_escritorio_usuario;
 
-insert 
-
-
+--8.- Logica sga_proveedor 
 
 CREATE SEQUENCE seq_id_proveedor
 INCREMENT BY 1
@@ -545,6 +542,8 @@ BEGIN
 END prc_lst_id_proveedor;
 END pkg_app_web_proveedor;
 
+--9.- Datos sga_proveedor 
+
 EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('NESTLE','11111111-1',11111111,'NESTLE@ESFALSO.CL','las lilas 1313',1,1);
 EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('CCU','11111111-1',11111112,'CCU@ESFALSO.CL','las escondida 656',4,1);
 EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('LA VEGA','11111111-1',11111113,'LA VEGA@ESFALSO.CL','carahue 2345',7,2);
@@ -555,6 +554,8 @@ EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('HYM','11111111-1',11111117,'HYM@E
 EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('AMERICANINO','11111111-1',11111118,'AMERICANINO@ESFALSO.CL','el morado 2154',3,4);
 EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('NIKE','11111111-1',11111119,'NIKE@ESFALSO.CL','uno 1111',11,5);
 EXEC PKG_APP_WEB_PROVEEDOR.PRC_ADD_PROVEEDOR ('SPARTA','11111111-1',11111120,'SPARTA@ESFALSO.CL','sol 567',9,5);
+
+--10.- Datos sga_marca 
 
 INSERT INTO sga_marca VALUES (1,'Nescafe',1,1,1);
 INSERT INTO sga_marca VALUES (2,'Sahne nuss',1,1,1);
@@ -576,6 +577,8 @@ INSERT INTO sga_marca VALUES (17,'Air Max',1,5,9);
 INSERT INTO sga_marca VALUES (18,'Clothes',1,5,9);
 INSERT INTO sga_marca VALUES (19,'Trek',1,5,10);
 INSERT INTO sga_marca VALUES (20,'Lippi',1,5,10);
+
+--11.- Logica sga_producto 
 
 CREATE SEQUENCE seq_id_producto
 INCREMENT BY 1
@@ -662,7 +665,7 @@ BEGIN
 END prc_lst_id_producto;
 END pkg_app_web_producto;
 
-
+--12.- Datos sga_producto
 
 EXEC PKG_APP_WEB_PRODUCTO.PRC_ADD_PRODUCTO('Dolca 500mg',900,1500,10,1);
 EXEC PKG_APP_WEB_PRODUCTO.PRC_ADD_PRODUCTO('Tradicional 500mg',700,1300,20,1);
@@ -704,6 +707,8 @@ EXEC PKG_APP_WEB_PRODUCTO.PRC_ADD_PRODUCTO('Carbonate T36',450000,600000,3,19);
 EXEC PKG_APP_WEB_PRODUCTO.PRC_ADD_PRODUCTO('Space T38',550000,700000,4,19);
 EXEC PKG_APP_WEB_PRODUCTO.PRC_ADD_PRODUCTO('Banano M',15000,25000,10,20);
 EXEC PKG_APP_WEB_PRODUCTO.PRC_ADD_PRODUCTO('Camellback 10lt',30000,50000,10,20);
+
+--13.- Logica sga_cliente
 
 CREATE SEQUENCE seq_id_cliente
 INCREMENT BY 1
@@ -816,6 +821,8 @@ BEGIN
 END prc_lst_id_cliente;
 END pkg_app_web_cliente;
 
+--14.-Datos sga_cliente
+
 EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-1','Elba','Surita',1111111,'Elba@ESMENTIRA.COM','12/03/90','lejos 1313',1,8);
 EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-2','Josefa','Parra',1111112,'Josefa@ESMENTIRA.COM','12/06/90','galaxia 1698',1,5);
 EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-3','Marcelo','Avila',1111113,'Marcelo@ESMENTIRA.COM','12/05/90','saturno 658',2,6);
@@ -827,4 +834,157 @@ EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-8','Valentina','Gonzalez',1111
 EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-9','Fabiola','Rosas',1111119,'Fabiola@ESMENTIRA.COM','02/07/90','manuel montt 999',5,2);
 EXEC PKG_APP_WEB_CLIENTE.PRC_ADD_CLIENTE('1111111-K','Camila','Suazo',1111120,'Camila@ESMENTIRA.COM','19/05/14','lejitos 888',5,1);
 
+--15.- Logica entorno aplicación web
 
+CREATE OR REPLACE PACKAGE pkg_app_web_entorno AS
+PROCEDURE prc_login (p_username    IN  sga_usuario.usuario%TYPE,
+                     p_pass        IN  sga_usuario.pass%TYPE,
+                     p_recordset   OUT SYS_REFCURSOR);
+PROCEDURE prc_obtener_menu (p_id_menu       IN  sga_menu.id_menu%TYPE,
+                            p_recordset     OUT SYS_REFCURSOR); 
+PROCEDURE prc_lst_comuna (p_recordset     OUT SYS_REFCURSOR); 
+PROCEDURE prc_lst_marca (p_id_almacen       IN  sga_almacen.id_almacen%TYPE,
+                         p_recordset     OUT SYS_REFCURSOR); 
+PROCEDURE prc_lst_produ_provee (p_id_proveedor       IN  sga_proveedor.id_proveedor%TYPE,
+                         p_recordset     OUT SYS_REFCURSOR);
+END pkg_app_web_entorno;
+/
+CREATE OR REPLACE PACKAGE BODY pkg_app_web_entorno AS
+PROCEDURE prc_login (p_username    IN  sga_usuario.usuario%TYPE,
+                                          p_recordset   OUT SYS_REFCURSOR) AS
+    BEGIN 
+        OPEN p_recordset FOR
+            SELECT id_usuario,
+            usuario,
+			pass,
+            email,
+            estado,
+            id_perfil,
+            id_almacen 
+            FROM sga_usuario
+            WHERE usuario = p_username;
+    END prc_login;
+ 
+PROCEDURE prc_obtener_menu (p_id_menu       IN  sga_menu.id_menu%TYPE,
+                            p_recordset     OUT SYS_REFCURSOR) AS 
+     BEGIN 
+        OPEN p_recordset FOR
+            SELECT descripcion,
+            padre_menu,
+            destino ,
+            estado  
+            FROM sga_menu WHERE p_id_menu = id_menu;
+END prc_obtener_menu;
+PROCEDURE prc_lst_comuna (p_recordset     OUT SYS_REFCURSOR) AS
+BEGIN
+   OPEN p_recordset FOR
+   SELECT id_comuna,
+          comuna
+   FROM sga_comuna
+   WHERE estado = 1;
+END prc_lst_comuna;
+PROCEDURE prc_lst_marca (p_id_almacen       IN  sga_almacen.id_almacen%TYPE,
+                         p_recordset     OUT SYS_REFCURSOR) AS
+BEGIN
+   OPEN p_recordset FOR
+   SELECT id_marca,
+          marca,
+          id_proveedor
+   FROM sga_marca marca
+   JOIN sga_almacen almacen
+   ON marca.id_categoria = almacen.id_categoria
+   WHERE almacen.id_almacen = p_id_almacen
+   AND   marca.estado = 1;
+END prc_lst_marca;   
+PROCEDURE prc_lst_produ_provee (p_id_proveedor       IN  sga_proveedor.id_proveedor%TYPE,
+                         p_recordset     OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_recordset FOR
+    SELECT produ.id_producto,
+            produ.nombre,
+            produ.precio_compra 
+    FROM sga_marca marca
+    JOIN sga_producto produ
+    ON marca.id_marca = produ.id_marca
+    WHERE marca.id_proveedor=p_id_proveedor;
+END prc_lst_produ_provee;
+END pkg_app_web_entorno; 
+
+--16.- 	Logica 	de existencia de datos 
+
+CREATE OR REPLACE PACKAGE pkg_app_web_existencia AS
+PROCEDURE prc_existe_producto (p_nombre    IN  sga_producto.nombre%TYPE,
+                                p_mensaje   OUT INT);
+PROCEDURE prc_existe_proveedor (p_nombre       IN  sga_proveedor.nombre%TYPE,
+                                p_rut       IN  sga_proveedor.rut%TYPE, 
+                                p_mensaje   OUT INT); 
+PROCEDURE prc_existe_cliente (p_rut    IN  sga_cliente.rut%TYPE,
+                                p_mensaje   OUT INT); 
+END pkg_app_web_existencia;
+/
+CREATE OR REPLACE PACKAGE BODY pkg_app_web_existencia AS
+PROCEDURE prc_existe_producto
+    (
+    p_nombre    IN  sga_producto.nombre%TYPE,
+    p_mensaje   OUT INT
+    )
+    IS var_count INT;
+ 
+    BEGIN
+        p_mensaje := 0;
+        SELECT COUNT(*) INTO var_count FROM sga_producto WHERE nombre = p_nombre;
+        IF(var_count > 0) THEN
+
+        p_mensaje:=1;
+
+        ELSE
+
+        p_mensaje:=0;
+        
+        END IF;
+END prc_existe_producto;
+
+PROCEDURE prc_existe_proveedor
+    (
+    p_nombre    IN  sga_proveedor.nombre%TYPE,
+    p_rut       IN  sga_proveedor.rut%TYPE,
+    p_mensaje   OUT INT
+    )
+    IS var_count INT;
+ 
+    BEGIN
+        p_mensaje := 0;
+        SELECT COUNT(*) INTO var_count FROM sga_proveedor WHERE nombre = p_nombre AND rut = p_rut;
+        IF(var_count > 0) THEN
+
+        p_mensaje:=1;
+
+        ELSE
+
+        p_mensaje:=0;
+        
+        END IF;
+END prc_existe_proveedor;
+    
+PROCEDURE prc_existe_cliente
+    (
+    p_rut    IN  sga_cliente.rut%TYPE,
+    p_mensaje   OUT INT
+    )
+    IS var_count INT;
+ 
+    BEGIN
+        p_mensaje := 0;
+        SELECT COUNT(*) INTO var_count FROM sga_cliente WHERE rut = p_rut;
+        IF(var_count > 0) THEN
+
+        p_mensaje:=1;
+
+        ELSE
+
+        p_mensaje:=0;
+        
+        END IF;
+END prc_existe_cliente;    
+
+END pkg_app_web_existencia;
