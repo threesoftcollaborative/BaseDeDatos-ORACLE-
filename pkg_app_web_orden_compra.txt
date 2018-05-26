@@ -1,0 +1,45 @@
+CREATE SEQUENCE seq_id_orden_compra
+INCREMENT BY 1
+START WITH 1;
+
+CREATE SEQUENCE seq_id_detalle_orden_compra
+INCREMENT BY 1
+START WITH 1;
+
+
+CREATE OR REPLACE PACKAGE pkg_app_web_orden_compra AS
+TRIGGER trg_id_detalle_orden_compra;
+PROCEDURE prc_generar_orden_compra (p_almacen               IN sga_orden_compra.id_almacen%TYPE,
+                                    p_id_proveedor          IN sga_orden_compra.id_proveedor%TYPE,
+                                    p_id_usuario            IN sga_orden_compra.id_usuario%TYPE,
+                                    p_records                 IN SYS_REFCURSOR);
+END prc_generar_orden_compra;
+/
+CREATE OR REPLACE PACKAGE BODY pkg_app_web_orden_compra AS 
+TRIGGER trg_id_detalle_orden_compra 
+BEFORE INSERT ON 
+PROCEDURE prc_generar_orden_compra (p_almacen               IN sga_orden_compra.id_almacen%TYPE,
+                                    p_id_proveedor          IN sga_orden_compra.id_proveedor%TYPE,
+                                    p_id_usuario            IN sga_orden_compra.id_usuario%TYPE,
+                                    p_records               IN SYS_REFCURSOR) AS
+v_id_producto       sga_detalle_orden_compra.id_producto%TYPE;
+v_cantidad          sga_detalle_orden_compra.cantidad%TYPE;
+v_id_orden_compra   sga_detalle_orden_compra.id_orden_compra%TYPE;
+BEGIN 
+    INSERT INTO sga_orden_compra (id_orden_compra,
+                                  fecha_orden_compra,
+                                  estado,
+                                  id_usuario,
+                                  id_proveedor,
+                                  id_almacen)                                  
+    VALUES (seq_id_orden_compra.NEXTVAL,
+            sysdate,
+            1,
+            p_id_usuario,
+            p_id_proveedor,
+            p_id_almaccen)
+    RETURNING 
+            
+END prc_generar_orden_compra;
+END pkg_app_web_orden_compra;
+                                    
